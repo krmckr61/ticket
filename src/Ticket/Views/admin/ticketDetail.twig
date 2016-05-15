@@ -1,0 +1,122 @@
+{% include 'admin/pieces/adminHeader.twig' %}
+
+<div class="container">
+    <h3>Admin Dashboard</h3>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12">
+            {% if errors is defined %}
+                {% for err in errors %}
+                    <div class="alert alert-warning alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        {{ err }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if success is defined %}
+                <div class="alert alert-success alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ success }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-8">
+                    <h4>Ticket Detail : {{ ticket.id }}</h4>
+                </div>
+                <div class="col-xs-4 text-right">
+                    <a href="/admin/tickets" class="btn btn-danger"><- Show Tickets</a>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="col-xs-2 text-right" style="font-weight: bold;">User :</div>
+                    <div class="col-xs-10">{{ ticket.user }}</div>
+                    <div class="col-xs-2 text-right" style="font-weight: bold;">Head :</div>
+                    <div class="col-xs-10">{{ ticket.head }}</div>
+                    <div class="col-xs-2 text-right" style="font-weight: bold;">Description :</div>
+                    <div class="col-xs-10">{{ ticket.description }}</div>
+                    <div class="col-xs-2 text-right" style="font-weight: bold;">Categories :</div>
+                    <div class="col-xs-10">
+                        {% for cat in ticket.cats %}
+                            {{ cat.name }}
+                        {% endfor %}
+                    </div>
+                    <div class="col-xs-2 text-right" style="font-weight: bold;">Importance :</div>
+                    <div class="col-xs-10">{{ ticket.importance }}</div>
+                    <div class="col-xs-2 text-right" style="font-weight: bold;">Attachment :</div>
+                    <div class="col-xs-10"><a href="/files/{{ ticket.file }}" target="_blank">Download</a></div>
+                    <div class="col-xs-2 text-right" style="font-weight: bold;">Date :</div>
+                    <div class="col-xs-10">{{ ticket.date|date("d.m.Y H:i") }}</div>
+                    <div class="col-xs-2 text-right" style="font-weight: bold;">Status :</div>
+                    <div class="col-xs-10" style="margin-bottom:30px">
+                        {% if ticket.status == 3 %}
+                            Pending
+                        {% elseif ticket.status == 2 %}
+                            Solved
+                        {% elseif ticket.status == 1 %}
+                            Not Solved
+                        {% endif %}
+                    </div>
+                    <h3>Responses</h3>
+                    <div class="col-xs-12" style="max-height:500px;overflow-y:auto;margin-bottom:30px">
+                        {% for response in ticket.responses %}
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    {{ response.admin }}<br>
+                                    <span style="font-size:10px">{{ response.date|date("d.m.Y H:i") }}</span>
+                                </div>
+                                <div class="col-xs-10">
+                                    {{ response.description }}
+                                </div>
+                            </div>
+                            <hr>
+                        {% endfor %}
+                    </div>
+                    <div class="col-xs-12" style="margin-bottom:30px">
+                        <form action="/admin/tickets/{{ ticket.id }}" method="post">
+                            <fieldset>
+                                <legend>New Response</legend>
+                                <div class="form-group">
+                                    <div class="col-xs-2">
+                                        Response
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <textarea name="description" id="" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                                <br>
+                                <button type="submit" name="sendResponse" class="btn btn-success">Send</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="col-xs-12">
+                        <form action="/admin/tickets/{{ ticket.id }}" method="post">
+                            <fieldset>
+                                <legend>Status</legend>
+                                <label for="solved">
+                                    <input id="solved" type="radio" name="status"
+                                           value="2" {% if ticket.status == 2 %} checked {% endif %}> Solved
+                                </label>
+                                <label for="notSolved">
+                                    <input id="notSolved" type="radio" name="status"
+                                           value="1" {% if ticket.status == 1 %} checked {% endif %}> Not Solved
+                                </label>
+                                <br>
+                                <button class="btn btn-success" name="updateStatus">Update</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'admin/pieces/footer.html' %}

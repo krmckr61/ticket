@@ -1,0 +1,92 @@
+{% include 'admin/pieces/adminHeader.twig' %}
+
+<div class="container">
+    <h3>Admin Dashboard</h3>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-8">
+                    <h4>Tickets</h4>
+                </div>
+                <div class="col-xs-4 text-right">
+                    <a href="/admin/categories" class="btn btn-info">Show Categories</a>
+                </div>
+            </div>
+            <hr>
+            <form action="/admin/tickets">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <td>
+                        </td>
+                        <td><input name="head" type="text" class="form-control" placeholder="Head" value="{% if fields.head is defined %}{{ fields.head.value }}{% endif %}"></td>
+                        <td>
+                            <select name="importance" id="" class="form-control">
+                                <option value="">Importance</option>
+                                {% for imp in importances %}
+                                    <option value="{{ imp.id }}"{% if (fields.importance is defined) and (fields.importance.value == imp.id) %} selected {% endif %}>{{ imp.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <select name="category" id="" class="form-control">
+                                <option value="">Category</option>
+                                {% for cat in categories %}
+                                    <option value="{{ cat.id }}"{% if (fields.category is defined) and (fields.category.value == cat.id) %} selected {% endif %}>{{ cat.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <select name="date" id="" class="form-control">
+                                <option value="">Date</option>
+                                {% for date in dates %}
+                                    <option value="{{ date.date }}"{% if (fields.date is defined) and (fields.date.value == date.date) %} selected {% endif %}>{{ date.date }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td></td>
+                        <td class="text-right">
+                            <button type="submit" class="btn btn-success">Search</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Id</th>
+                        <th>Head</th>
+                        <th>Importance</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>User</th>
+                        <th class="text-right">*</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for ticket in tickets %}
+                    <tr {% if ticket.status == 3 %} style="background-color:#F7F7CE" {% elseif ticket.status == 2 %} style="background-color:#DAF7CE" {% else %}  style="background-color:#F7CECE" {% endif %}>
+                        <td>{{ ticket.id }}</td>
+                        <td>{{ ticket.head }}</td>
+                        <td>{{ ticket.importance }}</td>
+                        <td>
+                            {% for cat in ticket.cats %}
+                                {{ cat.name }}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {{ ticket.date|date("d.m.Y H:i") }}
+                        </td>
+                        <td>
+                            {{ ticket.user }}
+                        </td>
+                        <td class="text-right">
+                            <a href="/admin/tickets/{{ ticket.id }}" class="btn btn-info">Detail</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% include 'admin/pieces/footer.html' %}

@@ -1,0 +1,62 @@
+{% include 'user/pieces/userHeader.twig' %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-6">
+            <h2>My Ticket : {{ ticket.id }}</h2>
+        </div>
+        <div class="col-xs-6 text-right">
+            <a href="/user/tickets" class="btn btn-danger"><- My Tickets</a>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12" style="margin-bottom: 30px">
+                <div class="col-xs-2 text-right" style="font-weight: bold;">User :</div>
+                <div class="col-xs-10">{{ ticket.user }}</div>
+                <div class="col-xs-2 text-right" style="font-weight: bold;">Head :</div>
+                <div class="col-xs-10">{{ ticket.head }}</div>
+                <div class="col-xs-2 text-right" style="font-weight: bold;">Description :</div>
+                <div class="col-xs-10">{{ ticket.description }}</div>
+                <div class="col-xs-2 text-right" style="font-weight: bold;">Categories :</div>
+                <div class="col-xs-10">
+                    {% for cat in ticket.categories %}
+                        {{ cat.name }}
+                    {% endfor %}
+                </div>
+                <div class="col-xs-2 text-right" style="font-weight: bold;">Importance :</div>
+                <div class="col-xs-10">{{ ticket.importance }}</div>
+                <div class="col-xs-2 text-right" style="font-weight: bold;">Attachment :</div>
+                <div class="col-xs-10"><a href="/files/{{ ticket.file }}" target="_blank">Download</a></div>
+                <div class="col-xs-2 text-right" style="font-weight: bold;">Date :</div>
+                <div class="col-xs-10">{{ ticket.date|date("d.m.Y H:i") }}</div>
+                <div class="col-xs-2 text-right" style="font-weight: bold;">Status :</div>
+                <div class="col-xs-10" style="margin-bottom:30px">
+                    {% if ticket.status == 3 %}
+                        Pending
+                    {% elseif ticket.status == 2 %}
+                        Solved
+                    {% elseif ticket.status == 1 %}
+                        Not Solved
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-xs-12" style="max-height:500px;overflow-y:auto;margin-bottom:30px">
+                <h3>Responses</h3>
+                <hr>
+                {% for response in ticket.responses %}
+                    <div class="row">
+                        <div class="col-xs-2">
+                            {{ response.admin }}<br>
+                            <span style="font-size:10px">{{ response.date|date("d.m.Y H:i") }}</span>
+                        </div>
+                        <div class="col-xs-10">
+                            {{ response.description }}
+                        </div>
+                    </div>
+                    <hr>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'user/pieces/footer.html' %}

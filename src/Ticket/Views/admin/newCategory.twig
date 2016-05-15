@@ -1,0 +1,46 @@
+{% include 'admin/pieces/adminHeader.twig' %}
+
+<div class="container">
+    <h3>Admin Dashboard</h3>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-8">
+                    <h4>New Category</h4>
+                </div>
+                <div class="col-xs-4 text-right">
+                    <a href="/admin/categories" class="btn btn-danger"><- Show Categories</a>
+                </div>
+            </div>
+            <hr>
+            {% if errors is defined %}
+            {% for err in errors %}
+                <div class="alert alert-warning alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ err }}
+                </div>
+            {% endfor %}
+            {% endif %}
+            {% if success is defined %}
+                <div class="alert alert-success alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ success }}
+                </div>
+            {% endif %}
+            <form method="post" action="/admin/categories/new">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Name</label>
+                    <input name="name" class="form-control" id="exampleInputEmail1" placeholder="Category Name">
+                </div>
+                <button type="submit" name="send" class="btn btn-default">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% include 'admin/pieces/footer.html' %}

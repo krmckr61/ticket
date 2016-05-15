@@ -1,0 +1,31 @@
+{% include 'admin/pieces/header.html' %}
+
+<div class="container">
+    {% if errors is defined %}
+        {% for err in errors %}
+            <div class="alert alert-warning alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ err }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <h1>Admin Login</h1>
+    <form method="post" action="/admin/login">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input name="email" class="form-control" id="exampleInputEmail1" placeholder="Email" value="test@admin.com.tr">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" name="password" class="form-control" id="exampleInputPassword1"
+                   placeholder="Password" value="123456">
+            <p class="help-block">The length of password field must be 6-10 characters</p>
+        </div>
+        <button type="submit" name="send" class="btn btn-default">Submit</button>
+    </form>
+</div>
+
+
+{% include 'admin/pieces/footer.html' %}
